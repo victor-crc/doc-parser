@@ -1,14 +1,12 @@
 from bs4 import BeautifulSoup
 
 
-# CURRENT METHOD: ==================================================================== //
-# –– Excludes tables.
 def parse_html_from_docx(html: str) -> list[str]:
     """
     Parses an html string, that has a `.docx` as source, and extracts its text
     passages.
     Currently, it ignores tables and extracts.
-    
+
     The 'docx --> html' conversion is usually done by the 'mammoth' library
     (https://github.com/mwilliamson/python-mammoth).
 
