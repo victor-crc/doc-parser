@@ -1,7 +1,45 @@
+import mammoth
 from bs4 import BeautifulSoup
 
 
-def parse_html_from_docx(html: str) -> list[str]:
+def extract_text_from_docx(docx_path: str) -> list[str]:
+    """
+    Extracts the text from a `.docx` file.
+
+    Args:
+        docx_path (str): The path to the `.docx` file.
+
+    Returns:
+        list[str]: A list of text passages extracted from the `.docx` file.
+    """
+    html = extract_html_string_from_docx(docx_path)
+    return parse_text_from_html_string(html)
+
+
+def extract_html_string_from_docx(docx_path: str) -> str:
+    """
+    Extracts the HTML string from a `.docx` file.
+
+    Args:
+        docx_path (str): The path to the `.docx` file.
+
+    Returns:
+        str: The generated HTML string.
+
+    """
+    with open(docx_path, "rb") as docx_file:
+        result = mammoth.convert_to_html(docx_file)
+        html = result.value  # The generated HTML
+        messages = result.messages  # Any messages, such as warnings during conversion
+
+    if len(messages) > 0:
+        for message in messages:
+            print(message)
+
+    return html
+
+
+def parse_text_from_html_string(html: str) -> list[str]:
     """
     Parses an html string, that has a `.docx` as source, and extracts its text
     passages.
